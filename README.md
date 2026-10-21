@@ -79,6 +79,10 @@ Debido a que los resultados no alcanzaron la precisión y robustez requeridas pa
 
 como podemos observar está contando una moneda de más, pero el resultado para monedas solapadas es bastante bueno.
 
+<img width="796" height="177" alt="image" src="https://github.com/user-attachments/assets/508c3552-9751-494e-ba16-058a0cd3380c" />
+
+Como podemos observar no relaciona bien el valor de las monedas con la propia moneda. Es por ello que hemos decidido usar cv2.findContours()
+
 ### 2.2 - Tarea 2
 
 #### ¿Qué teníamos que conseguir?
