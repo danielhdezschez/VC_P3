@@ -99,22 +99,22 @@ Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Ga
 
 Parámetros de salida:
 
-***imgorig***: imagen original en escala de grises.
+**imgorig**: imagen original en escala de grises.
 
-imth: imagen binaria tras la segmentación.
+**imth**: imagen binaria tras la segmentación.
 
-contornos: contornos detectados de las partículas.
+**contornos**: contornos detectados de las partículas.
 
 
 En segundo lugar, se ha creado obtener_etiqueta_real() la cual nos da la etiqueta asociada a un elemento del CSV con las notaciones correctas.
 
 Parámetros de entrada:
 
-cx: Posición del centroide en el eje X de una particula.
+**cx**: Posición del centroide en el eje X de una particula.
 
-cy: Posición del centroide en el eje X de una particula.
+**cy**: Posición del centroide en el eje X de una particula.
 
-ground_truth: Lista con la información del CSV
+**ground_truth**: Lista con la información del CSV
 
 Funcionamiento: 
 
@@ -122,7 +122,7 @@ A partir de la posición del centroide pasado por parámetro, realiza una compar
 
 Parámetros de salida:
 
-label_real: Si encuentra una coincidencia devuelve el label asociado. (None en caso de existir la particula)
+**label_real**: Si encuentra una coincidencia devuelve el label asociado. (None en caso de existir la particula)
 
 Por ultimo en las funciones de procesado, se ha creado obtener_caracteristicas():
 La cual a partir de los contornos encontrados en la imagen con la función cv2.findContours(), calcula características geométricas para el clasificado.
@@ -130,31 +130,33 @@ La cual a partir de los contornos encontrados en la imagen con la función cv2.f
 
 Parámetros de entrada: 
 
-contornos: Lista de contornos obtenidos mediante cv2.findContours().
+**contornos**: Lista de contornos obtenidos mediante cv2.findContours().
 
-Funcionamiento: La función recorre todos los contornos detectados y calcula una serie de características geométricas para cada partícula. Estas características son todas devueltas para poder clasificar las partículas según los datos obtenidos. 
+Funcionamiento: 
+
+La función recorre todos los contornos detectados y calcula una serie de características geométricas para cada partícula. Estas características son todas devueltas para poder clasificar las partículas según los datos obtenidos. 
 
 Parámetros de salida:
 
-area: Área del contorno en píxeles.
+**area**: Área del contorno en píxeles.
 
-perimetro: Longitud del borde de la partícula.
+**perimetro**: Longitud del borde de la partícula.
 
-compacidad: Mide la relación entre el perímetro y el área de la partícula.
+**compacidad**: Mide la relación entre el perímetro y el área de la partícula.
 
-aspect_ratio: Relación entre anchura y altura del rectángulo contenedor.
+**aspect_ratio**: Relación entre anchura y altura del rectángulo contenedor.
 
-solidity: Relación entre el área real de la partícula y el área de su envolvente convexa.
+**solidity**: Relación entre el área real de la partícula y el área de su envolvente convexa.
 
-extent: Porcentaje del rectángulo contenedor ocupado por la partícula
+**extent**: Porcentaje del rectángulo contenedor ocupado por la partícula
 
-relacion_elipse: Relación entre el eje mayor y el eje menor de la elipse ajustada.
+**relacion_elipse**: Relación entre el eje mayor y el eje menor de la elipse ajustada.
 
-relacion_centroide: Relación entre la distancia mínima y máxima desde el centroide hasta el contorno.
+**relacion_centroide**: Relación entre la distancia mínima y máxima desde el centroide hasta el contorno.
 
-cx: Coordenada X del centroide de la partícula.
+**cx**: Coordenada X del centroide de la partícula.
 
-cy: Coordenada Y del centroide de la partícula.
+**cy**: Coordenada Y del centroide de la partícula.
 
 Una vez definidas las funciones de procesado y extracción de características, ya se puede comenzar a explicar el flujo de trabajo.
 
