@@ -89,7 +89,7 @@ Para comenzar se explican los métodos usados y creados para la clasificación d
 
 En primer lugar, se ha creado la función procesar_imagen() la cual se va a ocupar de realizar toda la lógica necesaria para sacar contornos en la imagen. En este caso se ha optado por esta versión pero comentado se ofrece otro procesado de imagen distinto.
 
-Parámetros de entrada: 
+***Parámetros de entrada***: 
 
 **ruta_imagen**: Será la ruta a la imagen que queramos procesar.
 
