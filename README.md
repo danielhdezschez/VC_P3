@@ -240,6 +240,7 @@ Como se puede observar ahora, los fragmentos son detectados en su gran mayoría 
 
 **Cabe destacar, que el codigo desarrollado mejorado por inteligencia articial ha sido añadido de manera externa al ya desarrollado ya que se considera que aunque las métricas sean mejores estan lejos de ser perfectas**
 
+
 #### Imágenes adjuntando los resultados obtenidos
 
 Si se quiere observar las características geométricas existe la función imprimir_resultado(), usándola con los datos que se ha conseguido de entrenamiento.
