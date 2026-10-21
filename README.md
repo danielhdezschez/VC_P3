@@ -2,12 +2,22 @@
 ### Jaime Cuenca Relinque y Daniel Hernández Sánchez
 #### **Objetivo del informe**
 
-En este documento se presenta la memoria de la tercera práctica de Visión por Computador
+En este documento presentamos el resumen de la tercera práctica de la asignatura, orientada a la segmentación de objetos y la medida de elementos en tiempo real. Partiendo de los métodos explicados en las prácticas previas, el propósito de este trabajo es aplicar estas herramientas para detectar, clasificar, contar monedas y tipos de residuos.
 
 ### 2.1 - Tarea 1
 
 #### ¿Qué teníamos que conseguir?
+En esta tarea utilizamos un entorno en vivo, donde el programa debía analizar cada fotograma capturado por la cámara al instante.
 
+La tarea consistía en:
+
+Capturar y preparar la imagen: Recibir el vídeo de la cámara en directo, pasar la imagen a escala de grises y aplicarle un filtro de desfoque (GaussianBlur) para suavizar la imagen y evitar errores por ruido o suciedad.
+
+Separar las monedas del fondo: Aplicar la técnica de binarización de Otsu (cuyo código hemos visto en esta práctica) para separar claramente los objetos del fondo, e ignorar aquellas figuras que no fuesen redondas mediante un filtro de forma (compacidad).
+
+Calibrar el tamaño con un clic: Conseguir que el usuario pudiese indicarle al programa la escala real haciendo clic sobre una moneda de referencia (en nuestro caso, la de 1 Euro, que mide $23.25\text{mm} de diámetro). Con ese simple gesto, el programa calcula cuántos píxeles equivalen a un milímetro.
+
+Clasificar y sumar el dinero: Una vez obtenida la medida en milímetros de cada moneda detectada, comparar ese tamaño con una lista de diámetros oficiales de monedas de Euro, identificar de cuál se trata y mostrar el importe total sumado en la propia pantalla.
 
 #### ¿Cómo lo hemos hecho?
 
