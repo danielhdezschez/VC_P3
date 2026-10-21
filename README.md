@@ -63,7 +63,7 @@ Como se puede observar al ser los diámetros de algunas monedas entre ellas muy 
 
 antes de clicar sobre la moneda de 1 euro 
 
-<img width="819" height="651" alt="image" src="https://github.com/user-attachments/assets/de57204f-528d-4ef2-a115-4dd6cf11153a" />
+<img width="792" height="627" alt="image" src="https://github.com/user-attachments/assets/1483fdab-606c-4e39-a075-bd5db0b59093" />
 
 Tras clicar sobre la moneda de 1 euro ya liga cada moneda a un valor de la lista
 
