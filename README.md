@@ -15,18 +15,51 @@ Capturar y preparar la imagen: Recibir el vídeo de la cámara en directo, pasar
 
 Separar las monedas del fondo: Aplicar la técnica de binarización de Otsu (cuyo código hemos visto en esta práctica) para separar claramente los objetos del fondo, e ignorar aquellas figuras que no fuesen redondas mediante un filtro de forma (compacidad).
 
-Calibrar el tamaño con un clic: Conseguir que el usuario pudiese indicarle al programa la escala real haciendo clic sobre una moneda de referencia (en nuestro caso, la de 1 Euro, que mide $23.25\text{mm} de diámetro). Con ese simple gesto, el programa calcula cuántos píxeles equivalen a un milímetro.
+Calibrar el tamaño con un clic: Conseguir que el usuario pudiese indicarle al programa la escala real haciendo clic sobre una moneda de referencia (en nuestro caso, la de 1 Euro, que mide 23.25mm de diámetro). Con ese simple gesto, el programa calcula cuántos píxeles equivalen a un milímetro.
 
 Clasificar y sumar el dinero: Una vez obtenida la medida en milímetros de cada moneda detectada, comparar ese tamaño con una lista de diámetros oficiales de monedas de Euro, identificar de cuál se trata y mostrar el importe total sumado en la propia pantalla.
 
 #### ¿Cómo lo hemos hecho?
 
+Para resolver esta práctica nos basamos en los algoritmos y códigos revisados en la sesión. El procedimiento seguido ha sido el siguiente:
+
+Configuración de la cámara y la interfaz:
+
+Intentar realizar la práctica enfocando las monedas con la cámara integrada del portátil resultaba muy incómodo y difícil de encuadrar. Por ello, optamos por instalar una aplicación móvil que nos permitiese usar la cámara del teléfono como cámara web (conectándola directamente al programa).
+
+También asociamos una función al ratón (cv2.setMouseCallback) para que la ventana detectase cuándo y dónde hacíamos clic
+
+Procesamiento de cada fotograma:
+
+Pasamos el fotograma a grises y lo suavizamos con un filtro gaussiano de (5, 5). Aplicamos el umbralizado automático de Otsu (cv2.THRESH_OTSU) para aislar los objetos.Para detectar los contornos empleamos la función cv2.findContours con la opción cv2.RETR_EXTERNAL (tal y como vimos en las explicaciones de clase), la cual extrae únicamente los contornos exteriores descartando detalles internos innecesarios.
+
+Filtrado y calibración:
+
+Eliminamos pequeñas manchas o ruido en la imagen descartando zonas muy pequeñas, probamos primero con 300 pero cogía formas que no eran monedas así que subimos a 500. Para asegurarnos de detectar solo monedas, comprobamos la relación entre el perímetro y el área (compacidad); si la forma no era lo suficientemente circular, el programa la ignoraba.
+
+Ajustamos una elipse a cada contorno válido para medir su tamaño en píxeles.
+
+Al hacer clic sobre la moneda de 1 Euro, el programa calcula la distancia desde el clic hasta el centro de la moneda más cercana. Si la toca, fija el factor de conversión (píxeles por milímetro) y borra el registro del clic.
+
+Identificación y muestra de resultados:
+
+Con la medida en milímetros de cada moneda, el programa busca cuál es el diámetro oficial que más se le parece dentro de nuestra lista y le asigna su valor correspondiente.
+
+Finalmente, el programa dibuja los bordes de las monedas en verde y muestra en la parte superior el dinero total acumulado. Si todavía no se ha calibrado, muestra un texto en rojo indicando que debemos hacer clic sobre la moneda de 1 Euro.
 
 #### ¿Qué resultados hemos obtenido?
 
+Tras poner a prueba el programa con la cámara del móvil en tiempo real, hemos llegado a las siguientes conclusiones:
+
+Facilidad de uso con la app móvil: El uso de la cámara del teléfono facilitó enormemente el encuadre vertical sobre la mesa en comparación con la cámara del portátil, logrando una captura mucho más clara y estable de las monedas.
+
+Precisión en la clasificación: El sistema cuenta y clasifica correctamente las monedas en estático. Gracias al umbralizado de Otsu y a la función cv2.findContours con RETR_EXTERNAL, la detección de los bordes exteriores funciona de forma muy fiable.
+
+Necesidad de recalibración al mover la cámara: Comprobamos que el recuento es exacto siempre que la cámara permanezca en una posición fija. Sin embargo, al mover o cambiar la altura del teléfono respecto a la mesa, la relación entre píxeles y milímetros varía de inmediato, por lo que se hace necesario volver a hacer clic sobre la moneda de 1 Euro para recalibrar la medida.
 
 #### Imágenes adjuntando los resultados obtenidos
 
+<img width="793" height="654" alt="WhatsApp Image 2026-10-21 at 20 33 32" src="https://github.com/user-attachments/assets/379b3efa-f7fc-4d08-a3b3-186f9029a964" />
 
 ### 2.2 - Tarea 2
 
