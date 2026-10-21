@@ -94,11 +94,12 @@ Parámetros de entrada:
 **ruta_imagen**: Será la ruta a la imagen que queramos procesar.
 
 Funcionamiento:
+
 Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Gaussiano con el objetivo de reducir ruido y eliminar pequeñas variaciones locales. Posteriormente usamos una umbralización adaptativa para separar automáticamente las partículas del fondo, al estar invertidos los blancos y negros de la imagen tras el umbralizado se deben volver a invertir (255-umbral) y se hace un binarizado final para obtener una máscara mas limpia y homogenea. Con la imagen ya preparada para sacar contornos de usa la función cv2.findContours() y se sacan los contornos externos (RETR_EXTERNAL) de la imagen.
 
 Parámetros de salida:
 
-imgorig: imagen original en escala de grises.
+***imgorig***: imagen original en escala de grises.
 
 imth: imagen binaria tras la segmentación.
 
