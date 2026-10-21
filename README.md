@@ -74,8 +74,11 @@ Tras clicar sobre la moneda de 1 euro ya liga cada moneda a un valor de la lista
 #### ¿Qué teníamos que conseguir?
 
 En este caso, se pide desarrollar un procedimiento que extraiga las partículas presentes en la imagen "MPs_test.jpg" y clasifique las mismas en tres tipos:
+
 -Alquitrán(TAR)
+
 -Pellets(PEL)
+
 -Fragmentos(FRA)
 
 Para el desarrollo de la misma se nos facilita tres imágenes de entrenamiento cada una ella con presencia de solo un tipo de partícula. 
@@ -93,21 +96,30 @@ Funcionamiento:
 Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Gaussiano con el objetivo de reducir ruido y eliminar pequeñas variaciones locales. Posteriormente usamos una umbralización adaptativa para separar automáticamente las partículas del fondo, al estar invertidos los blancos y negros de la imagen tras el umbralizado se deben volver a invertir (255-umbral) y se hace un binarizado final para obtener una máscara mas limpia y homogenea. Con la imagen ya preparada para sacar contornos de usa la función cv2.findContours() y se sacan los contornos externos (RETR_EXTERNAL) de la imagen.
 
 Parámetros de salida:
+
 imgorig: imagen original en escala de grises.
+
 imth: imagen binaria tras la segmentación.
+
 contornos: contornos detectados de las partículas.
+
 
 En segundo lugar, se ha creado obtener_etiqueta_real() la cual nos da la etiqueta asociada a un elemento del CSV con las notaciones correctas.
 
 Parámetros de entrada:
+
 cx: Posición del centroide en el eje X de una particula.
+
 cy: Posición del centroide en el eje X de una particula.
+
 ground_truth: Lista con la información del CSV
 
 Funcionamiento: 
+
 A partir de la posición del centroide pasado por parámetro, realiza una comparativa para saber si hay alguna particula en esa posición y obtiene su etiqueta. 
 
 Parámetros de salida:
+
 label_real: Si encuentra una coincidencia devuelve el label asociado. (None en caso de existir la particula)
 
 Por ultimo en las funciones de procesado, se ha creado obtener_caracteristicas():
@@ -115,34 +127,45 @@ La cual a partir de los contornos encontrados en la imagen con la función cv2.f
 
 
 Parámetros de entrada: 
+
 contornos: Lista de contornos obtenidos mediante cv2.findContours().
 
 Funcionamiento: La función recorre todos los contornos detectados y calcula una serie de características geométricas para cada partícula. Estas características son todas devueltas para poder clasificar las partículas según los datos obtenidos. 
 
 Parámetros de salida:
+
 area: Área del contorno en píxeles.
+
 perimetro: Longitud del borde de la partícula.
+
 compacidad: Mide la relación entre el perímetro y el área de la partícula.
+
 aspect_ratio: Relación entre anchura y altura del rectángulo contenedor.
+
 solidity: Relación entre el área real de la partícula y el área de su envolvente convexa.
+
 extent: Porcentaje del rectángulo contenedor ocupado por la partícula
+
 relacion_elipse: Relación entre el eje mayor y el eje menor de la elipse ajustada.
+
 relacion_centroide: Relación entre la distancia mínima y máxima desde el centroide hasta el contorno.
+
 cx: Coordenada X del centroide de la partícula.
+
 cy: Coordenada Y del centroide de la partícula.
 
 Una vez definidas las funciones de procesado y extracción de características, ya se puede comenzar a explicar el flujo de trabajo.
 
-Preparación del conjunto de evaluación
+##### Preparación del conjunto de evaluación
 
 Se comienza cargando la imagen de prueba MPs_test.jpg junto con el fichero de anotaciones MPs_test_bbs.csv, que contiene la posición y tipología de las partículas etiquetadas manualmente. Las anotaciones se almacenan en una estructura de datos llamada ground_truth que se usará posteriormente para la matriz de confusión.
 Para el análisis de las partículas la imagen MPs_test.jpg es transformada con la función procesar_imagen() a una lista de contornos y posteriormente se obtienen sus características con obtener_caracteristicas(). 
 
-Obtención de las etiquetas reales
+##### Obtención de las etiquetas reales
 
 Una vez ya tenemos las características, se relacionan los contornos encontrados con los contornos anotados con la función obtener_etiqueta_real() y se guardan para comparar con la predicción.
 
-Construcción del conjunto de entrenamiento
+##### Construcción del conjunto de entrenamiento
 
 Una vez tenemos las caracteristicas extraidas de la imagen que se va analizar se pasa al entrenamiento del clasificador en este caso se ha decidido usar un DecisionTreeClassifier. Este clasificador 
 Las imágenes de entrenamiento contienen partículas pertenecientes a una única categoría:
@@ -155,7 +178,7 @@ Cada imagen es procesada mediante la función procesar_imagen() obteniéndose lo
 
 Posteriormente se calculan sus características geométricas con obtener_caracteristicas() y se construye el conjunto de entrenamiento con los vectores de características de todas las partículas y un vector con su etiqueta.
 
-Entrenamiento del árbol de decisión
+##### Entrenamiento del árbol de decisión
 
 Para realizar la clasificación se emplea un árbol de decisión configurado con una profundidad máxima de cuatro niveles. Durante el entrenamiento, el algoritmo analiza las características geométricas de las partículas y aprende automáticamente reglas que permiten separar las distintas clases.
 De esta forma se evita definir manualmente umbrales de decisión y se obtiene una clasificación basada en los datos de entrenamiento. 
