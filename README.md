@@ -90,7 +90,8 @@ Para comenzar se explican los métodos usados y creados para la clasificación d
 En primer lugar, se ha creado la función procesar_imagen() la cual se va a ocupar de realizar toda la lógica necesaria para sacar contornos en la imagen. En este caso se ha optado por esta versión pero comentado se ofrece otro procesado de imagen distinto.
 
 Parámetros de entrada: 
-ruta_imagen: Será la ruta a la imagen que queramos procesar.
+
+**ruta_imagen**: Será la ruta a la imagen que queramos procesar.
 
 Funcionamiento:
 Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Gaussiano con el objetivo de reducir ruido y eliminar pequeñas variaciones locales. Posteriormente usamos una umbralización adaptativa para separar automáticamente las partículas del fondo, al estar invertidos los blancos y negros de la imagen tras el umbralizado se deben volver a invertir (255-umbral) y se hace un binarizado final para obtener una máscara mas limpia y homogenea. Con la imagen ya preparada para sacar contornos de usa la función cv2.findContours() y se sacan los contornos externos (RETR_EXTERNAL) de la imagen.
@@ -171,7 +172,9 @@ Una vez tenemos las caracteristicas extraidas de la imagen que se va analizar se
 Las imágenes de entrenamiento contienen partículas pertenecientes a una única categoría:
 
 FRA.png → Fragmentos
+
 PEL.png → Pellets
+
 TAR.png → Alquitrán
 
 Cada imagen es procesada mediante la función procesar_imagen() obteniéndose los contornos de todas las partículas presentes.
