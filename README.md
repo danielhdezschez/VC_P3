@@ -75,6 +75,10 @@ Como propuesta inicial para abordar el recuento en escenarios con monedas solapa
 
 Debido a que los resultados no alcanzaron la precisión y robustez requeridas para el cálculo del importe total, decidimos mantener cv2.findContours() como el método principal y definitivo para el desarrollo de ambas tareas de la práctica. No obstante, hemos conservado la aproximación basada en cv2.HoughCircles() a modo de tarea adicional y exploratoria, demostrando las posibilidades y limitaciones del conteo de elementos con solapamiento dentro del flujo de visión por computador.
 
+<img width="642" height="507" alt="image" src="https://github.com/user-attachments/assets/adecbb6b-e205-4451-ad65-18c534e57238" />
+
+como podemos observar está contando una moneda de más, pero el resultado para monedas solapadas es bastante bueno.
+
 ### 2.2 - Tarea 2
 
 #### ¿Qué teníamos que conseguir?
