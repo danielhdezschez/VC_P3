@@ -31,61 +31,245 @@ Para el desarrollo de la misma se nos facilita tres imágenes de entrenamiento c
 
 #### ¿Cómo lo hemos hecho?
 
-Para el filtrado de imágenes, umbralizado, etc... se ha utilizado la función procesar_imagen() la cual se va a ocupar de realizar toda la lógica necesaria para obtener los contornos de la imagen.
-Imagen original
-↓
-Suavizado Gaussiano (Reducir ruido | Eliminar pequeñas variaciones locales | Suavizar bordes muy irregulares)
-↓
-Umbralización adaptativa 
-Esto resulta especialmente útil en imágenes microscópicas porque la iluminación puede variar entre distintas zonas.
-Parametros:
-11
-Cada píxel utiliza una región local de:
-Plain Text
-11 × 11 píxeles
-2
-Se resta una pequeña cantidad al valor calculado para aumentar el contraste entre partículas y fondo.
-aunque todavía con los colores invertidos respecto a lo que necesitamos.
-↓
-Binarización final
-Primero se invierte la imagen:
-255 - umbral
-para conseguir que las partículas aparezcan en blanco y el fondo en negro.
-Posteriormente se aplica una binarización adicional para obtener una máscara más limpia.
+Para comenzar se explican los métodos usados y creados para la clasificación de las imagenes:
 
-↓
-Extracción de contornos
+En primer lugar, se ha creado la función procesar_imagen() la cual se va a ocupar de realizar toda la lógica necesaria para sacar contornos en la imagen. En este caso se ha optado por esta versión pero comentado se ofrece otro procesado de imagen distinto.
 
-#### Datos IMportantes usados
+Parámetros de entrada: 
+ruta_imagen: Será la ruta a la imagen que queramos procesar.
 
-cv2.RETR_EXTERNAL
-Permite recuperar únicamente los contornos externos de cada partícula.
-Esto evita detectar huecos o irregularidades internas como objetos independientes.
+Funcionamiento:
+Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Gaussiano con el objetivo de reducir ruido y eliminar pequeñas variaciones locales. Posteriormente usamos una umbralización adaptativa para separar automáticamente las partículas del fondo, al estar invertidos los blancos y negros de la imagen tras el umbralizado se deben volver a invertir (255-umbral) y se hace un binarizado final para obtener una máscara mas limpia y homogenea. Con la imagen ya preparada para sacar contornos de usa la función cv2.findContours() y se sacan los contornos externos (RETR_EXTERNAL) de la imagen.
 
-cv2.CHAIN_APPROX_SIMPLE
-Reduce el número de puntos almacenados por cada contorno manteniendo su forma, disminuyendo así el consumo de memoria y el coste computacional.
+Parámetros de salida:
+imgorig: imagen original en escala de grises.
+imth: imagen binaria tras la segmentación.
+contornos: contornos detectados de las partículas.
 
-#### se acaban los datos
+En segundo lugar, se ha creado obtener_etiqueta_real() la cual nos da la etiqueta asociada a un elemento del CSV con las notaciones correctas.
 
-Por un lado se ha desarrollado la función obtener_caracteristicas():
-La cual a partir de los contornos encontrados en la imagen con la función cv2.findContours(), calcula las siguientes características geométricas:
-area,
-perimetro,
-compacidad,
-aspect_ratio,
-solidity,
-extent,
-relacion_elipse,
-relacion_centroide
+Parámetros de entrada:
+cx: Posición del centroide en el eje X de una particula.
+cy: Posición del centroide en el eje X de una particula.
+ground_truth: Lista con la información del CSV
 
-A partir de los datos obtenidos en las imágenes de entrenamiento, se entrena un clasificador que "aprende" los posibles patrones de las características y nos permite hacer una predicción de cuantas partículas de cada tipo hay.
+Funcionamiento: 
+A partir de la posición del centroide pasado por parámetro, realiza una comparativa para saber si hay alguna particula en esa posición y obtiene su etiqueta. 
+
+Parámetros de salida:
+label_real: Si encuentra una coincidencia devuelve el label asociado. (None en caso de existir la particula)
+
+Por ultimo en las funciones de procesado, se ha creado obtener_caracteristicas():
+La cual a partir de los contornos encontrados en la imagen con la función cv2.findContours(), calcula características geométricas para el clasificado.
+
+
+Parámetros de entrada: 
+contornos: Lista de contornos obtenidos mediante cv2.findContours().
+
+Funcionamiento: La función recorre todos los contornos detectados y calcula una serie de características geométricas para cada partícula. Estas características son todas devueltas para poder clasificar las partículas según los datos obtenidos. 
+
+Parámetros de salida:
+area: Área del contorno en píxeles.
+perimetro: Longitud del borde de la partícula.
+compacidad: Mide la relación entre el perímetro y el área de la partícula.
+aspect_ratio: Relación entre anchura y altura del rectángulo contenedor.
+solidity: Relación entre el área real de la partícula y el área de su envolvente convexa.
+extent: Porcentaje del rectángulo contenedor ocupado por la partícula
+relacion_elipse: Relación entre el eje mayor y el eje menor de la elipse ajustada.
+relacion_centroide: Relación entre la distancia mínima y máxima desde el centroide hasta el contorno.
+cx: Coordenada X del centroide de la partícula.
+cy: Coordenada Y del centroide de la partícula.
+
+Una vez definidas las funciones de procesado y extracción de características, ya se puede comenzar a explicar el flujo de trabajo.
+
+Preparación del conjunto de evaluación
+
+Se comienza cargando la imagen de prueba MPs_test.jpg junto con el fichero de anotaciones MPs_test_bbs.csv, que contiene la posición y tipología de las partículas etiquetadas manualmente. Las anotaciones se almacenan en una estructura de datos llamada ground_truth que se usará posteriormente para la matriz de confusión.
+Para el análisis de las partículas la imagen MPs_test.jpg es transformada con la función procesar_imagen() a una lista de contornos y posteriormente se obtienen sus características con obtener_caracteristicas(). 
+
+Obtención de las etiquetas reales
+
+Una vez ya tenemos las características, se relacionan los contornos encontrados con los contornos anotados con la función obtener_etiqueta_real() y se guardan para comparar con la predicción.
+
+Construcción del conjunto de entrenamiento
+
+Una vez tenemos las caracteristicas extraidas de la imagen que se va analizar se pasa al entrenamiento del clasificador en este caso se ha decidido usar un DecisionTreeClassifier. Este clasificador 
+Las imágenes de entrenamiento contienen partículas pertenecientes a una única categoría:
+
+FRA.png → Fragmentos
+PEL.png → Pellets
+TAR.png → Alquitrán
+
+Cada imagen es procesada mediante la función procesar_imagen() obteniéndose los contornos de todas las partículas presentes.
+
+Posteriormente se calculan sus características geométricas con obtener_caracteristicas() y se construye el conjunto de entrenamiento con los vectores de características de todas las partículas y un vector con su etiqueta.
+
+Entrenamiento del árbol de decisión
+
+Para realizar la clasificación se emplea un árbol de decisión configurado con una profundidad máxima de cuatro niveles. Durante el entrenamiento, el algoritmo analiza las características geométricas de las partículas y aprende automáticamente reglas que permiten separar las distintas clases.
+De esta forma se evita definir manualmente umbrales de decisión y se obtiene una clasificación basada en los datos de entrenamiento. 
 
 #### ¿Qué resultados hemos obtenido?
 
+Una vez entrenado el árbol de decisión con las características geométricas extraídas de las muestras de entrenamiento, se realiza una predicción con la función modelo.fit(muestras_train, label_train).
+A partir de la predicción usando la librería sklearn.metrics, se puede estudiar distintas métricas, en este caso, se ha estudiado:
 
+Accuracy = 0.363
+
+El modelo obtiene una exactitud del 36.3%, lo que indica que aproximadamente una de cada tres partículas es clasificada correctamente. Aunque el valor no es elevado se debe tener en cuenta que la utilización exclusiva de características geométricas, sin recurrir a técnicas de aprendizaje profundo, hace que haya un porcentaje muy bajo de acierto.
+
+Precision = 0.694
+
+La precisión alcanza un valor de 69.4%. Esto indica que, cuando el clasificador asigna una etiqueta a una partícula, dicha predicción suele ser razonablemente fiable.
+
+Recall = 0.363
+
+El recall obtenido es de 36.3%, significativamente inferior a la precisión. Este comportamiento revela que el árbol de decisión está dejando sin detectar correctamente una gran cantidad de partículas reales, en especial aquellas clases cuyos descriptores geométricos son similares
+
+F1 Score  = 0.401
+
+El valor de 0.401 refleja el compromiso entre precisión y recall.
+
+Por último se puede observar la matriz de confusión obtenida, con los aciertos y fallos en detalle.
+
+<img width="699" height="510" alt="image" src="https://github.com/user-attachments/assets/77805ddc-b61a-4275-99ba-171902a8341b" />
+
+Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado.
 
 #### Imágenes adjuntando los resultados obtenidos
 
+Si se quiere observar las características geométricas existe la función imprimir_resultado(), usándola con los datos que se ha conseguido de entrenamiento.
 
+TAR: 
+Número de objetos: 9
 
+Área
+Media: 1431.2222222222222
+Std: 837.8501626554287
+Mediana: 1438.0
+
+Perímetro
+Media: 154.93560832076602
+Std: 79.58271103712252
+Mediana: 172.50966620445251
+
+Compacidad
+Media: 19.629876717286972
+Std: 5.213597223284835
+Mediana: 18.170966469036976
+
+Aspect Ratio
+Media: 0.9979405749348691
+Std: 0.14197386733806824
+Mediana: 0.9782608695652174
+
+Solidity
+Media: 0.9058116018099168
+Std: 0.04943008575248918
+Mediana: 0.9211401425178147
+
+Extent
+Media: 0.5746253274408738
+Std: 0.08446827918941069
+Mediana: 0.610512129380054
+
+Elipse
+Media: 1.5463420161595094
+Std: 0.5506531922323535
+Mediana: 1.4485541474714376
+
+Centroide
+Media: 0.4931703937607515
+Std: 0.1432657620716614
+Mediana: 0.49736463743969167
+
+PEL: 
+Número de objetos: 31
+
+Área
+Media: 164.06451612903226
+Std: 174.8964551705308
+Mediana: 140.5
+
+Perímetro
+Media: 141.0642398788083
+Std: 120.15826416553769
+Mediana: 102.42640614509583
+
+Compacidad
+Media: 130.7866805764562
+Std: 96.74231165226932
+Mediana: 111.7655913051606
+
+Aspect Ratio
+Media: 1.7023917003780578
+Std: 1.318818467010442
+Mediana: 1.1791044776119404
+
+Solidity
+Media: 0.448193819411499
+Std: 0.2349119172677839
+Mediana: 0.41336971350613916
+
+Extent
+Media: 0.23516078805825827
+Std: 0.12376646025109012
+Mediana: 0.23421926910299004
+
+Elipse
+Media: 2.4259039238765743
+Std: 1.4545830610584933
+Mediana: 1.8027496015350777
+
+Centroide
+Media: 0.17387981525091903
+Std: 0.1648709085024149
+Mediana: 0.11926535078992756
+
+FRA: 
+Número de objetos: 48
+
+Área
+Media: 107.84375
+Std: 157.1440142383333
+Mediana: 53.75
+
+Perímetro
+Media: 95.53112418204546
+Std: 104.93412249612312
+Mediana: 66.59797883033752
+
+Compacidad
+Media: 94.36747694392284
+Std: 70.81579864047582
+Mediana: 79.2095351036753
+
+Aspect Ratio
+Media: 1.6877896390136486
+Std: 0.9864110262506973
+Mediana: 1.4722222222222223
+
+Solidity
+Media: 0.48449151056747014
+Std: 0.14191524665194177
+Mediana: 0.4848842195540309
+
+Extent
+Media: 0.21587846099632677
+Std: 0.09227938535977578
+Mediana: 0.20574012550756737
+
+Elipse
+Media: 3.5908783190439237
+Std: 2.3008176905293993
+Mediana: 3.016996907754522
+
+Centroide
+Media: 0.10147086325153291
+Std: 0.08497338600044925
+Mediana: 0.08574171284305544
+
+Se puede observar también la imagen una vez aplicada los filtros.
+
+<img width="496" height="431" alt="image" src="https://github.com/user-attachments/assets/715c14ce-20a3-4fd6-bed6-0634fa808c6f" />
 
