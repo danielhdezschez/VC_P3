@@ -69,6 +69,12 @@ Tras clicar sobre la moneda de 1 euro ya liga cada moneda a un valor de la lista
 
 <img width="793" height="654" alt="WhatsApp Image 2026-10-21 at 20 33 32" src="https://github.com/user-attachments/assets/379b3efa-f7fc-4d08-a3b3-186f9029a964" />
 
+#### Código Adicional
+
+Como se puede observar en el código, se ha realizado un código adicional, en esta aproximación se ha intentado hacer el recuento de las monedas pero en este caso solapadas y solo para una imagen. 
+
+Este codigo ha sido de prueba para utilizar HoughCircles() y su ventaja de poner encontrar formas aunque estén solapadas ya que se decidio realizar ambas tareas con cv2.findContours.
+
 ### 2.2 - Tarea 2
 
 #### ¿Qué teníamos que conseguir?
@@ -93,11 +99,11 @@ En primer lugar, se ha creado la función procesar_imagen() la cual se va a ocup
 
 **ruta_imagen**: Será la ruta a la imagen que queramos procesar.
 
-Funcionamiento:
+***Funcionamiento***:
 
 Se comienza leyendo la imagen (en escala de grises) y realizando un suavizado Gaussiano con el objetivo de reducir ruido y eliminar pequeñas variaciones locales. Posteriormente usamos una umbralización adaptativa para separar automáticamente las partículas del fondo, al estar invertidos los blancos y negros de la imagen tras el umbralizado se deben volver a invertir (255-umbral) y se hace un binarizado final para obtener una máscara mas limpia y homogenea. Con la imagen ya preparada para sacar contornos de usa la función cv2.findContours() y se sacan los contornos externos (RETR_EXTERNAL) de la imagen.
 
-Parámetros de salida:
+***Parámetros de salida***:
 
 **imgorig**: imagen original en escala de grises.
 
@@ -108,7 +114,7 @@ Parámetros de salida:
 
 En segundo lugar, se ha creado obtener_etiqueta_real() la cual nos da la etiqueta asociada a un elemento del CSV con las notaciones correctas.
 
-Parámetros de entrada:
+***Parámetros de entrada***:
 
 **cx**: Posición del centroide en el eje X de una particula.
 
@@ -116,11 +122,11 @@ Parámetros de entrada:
 
 **ground_truth**: Lista con la información del CSV
 
-Funcionamiento: 
+***Funcionamiento***: 
 
 A partir de la posición del centroide pasado por parámetro, realiza una comparativa para saber si hay alguna particula en esa posición y obtiene su etiqueta. 
 
-Parámetros de salida:
+***Parámetros de salida***:
 
 **label_real**: Si encuentra una coincidencia devuelve el label asociado. (None en caso de existir la particula)
 
@@ -128,15 +134,15 @@ Por ultimo en las funciones de procesado, se ha creado obtener_caracteristicas()
 La cual a partir de los contornos encontrados en la imagen con la función cv2.findContours(), calcula características geométricas para el clasificado.
 
 
-Parámetros de entrada: 
+***Parámetros de entrada***: 
 
 **contornos**: Lista de contornos obtenidos mediante cv2.findContours().
 
-Funcionamiento: 
+***Funcionamiento***: 
 
 La función recorre todos los contornos detectados y calcula una serie de características geométricas para cada partícula. Estas características son todas devueltas para poder clasificar las partículas según los datos obtenidos. 
 
-Parámetros de salida:
+***Parámetros de salida***:
 
 **area**: Área del contorno en píxeles.
 
@@ -194,19 +200,19 @@ De esta forma se evita definir manualmente umbrales de decisión y se obtiene un
 Una vez entrenado el árbol de decisión con las características geométricas extraídas de las muestras de entrenamiento, se realiza una predicción con la función modelo.fit(muestras_train, label_train).
 A partir de la predicción usando la librería sklearn.metrics, se puede estudiar distintas métricas, en este caso, se ha estudiado:
 
-Accuracy = 0.363
+**Accuracy = 0.363**
 
 El modelo obtiene una exactitud del 36.3%, lo que indica que aproximadamente una de cada tres partículas es clasificada correctamente. Aunque el valor no es elevado se debe tener en cuenta que la utilización exclusiva de características geométricas, sin recurrir a técnicas de aprendizaje profundo, hace que haya un porcentaje muy bajo de acierto.
 
-Precision = 0.694
+**Precision = 0.694**
 
 La precisión alcanza un valor de 69.4%. Esto indica que, cuando el clasificador asigna una etiqueta a una partícula, dicha predicción suele ser razonablemente fiable.
 
-Recall = 0.363
+**Recall = 0.363**
 
 El recall obtenido es de 36.3%, significativamente inferior a la precisión. Este comportamiento revela que el árbol de decisión está dejando sin detectar correctamente una gran cantidad de partículas reales, en especial aquellas clases cuyos descriptores geométricos son similares
 
-F1 Score  = 0.401
+**F1 Score  = 0.401**
 
 El valor de 0.401 refleja el compromiso entre precisión y recall.
 
@@ -214,7 +220,7 @@ Por último se puede observar la matriz de confusión obtenida, con los aciertos
 
 <img width="699" height="510" alt="image" src="https://github.com/user-attachments/assets/77805ddc-b61a-4275-99ba-171902a8341b" />
 
-Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado.
+Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado. Con el fin de intentar que la predicción sea mas acertada se han utilizado diferentes umbrales para ver cual se adaptaba mejor a la imagen, de ahí que existan dos funciones de procesado de imagen, dependiendo la que se quiera utilizar, además, se intento añadir como parámetro de clasificación el color presente en el contorno pero ninguno de los datos obtenidos cambiaron la métrica.
 
 #### Imágenes adjuntando los resultados obtenidos
 
@@ -349,7 +355,7 @@ Media: 0.10147086325153291
 Std: 0.08497338600044925
 Mediana: 0.08574171284305544
 
-Se puede observar también la imagen una vez aplicada los filtros.
+Si se quiere ver la imagen sobre la que se sacan contornos, el propio código lo muestra.
 
 <img width="496" height="431" alt="image" src="https://github.com/user-attachments/assets/715c14ce-20a3-4fd6-bed6-0634fa808c6f" />
 
