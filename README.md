@@ -220,7 +220,25 @@ Por último se puede observar la matriz de confusión obtenida, con los aciertos
 
 <img width="699" height="510" alt="image" src="https://github.com/user-attachments/assets/77805ddc-b61a-4275-99ba-171902a8341b" />
 
-Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado. Con el fin de intentar que la predicción sea mas acertada se han utilizado diferentes umbrales para ver cual se adaptaba mejor a la imagen, de ahí que existan dos funciones de procesado de imagen, dependiendo la que se quiera utilizar, además, se intento añadir como parámetro de clasificación el color presente en el contorno pero ninguno de los datos obtenidos cambiaron la métrica.
+Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado. Con el fin de intentar que la predicción sea mas acertada se han utilizado diferentes umbrales para ver cual se adaptaba mejor a la imagen, de ahí que existan dos funciones de procesado de imagen, dependiendo la que se quiera utilizar.
+
+De manera adicional, se pregunto a varias inteligencias artificiales si podría mejorar el porcentaje de acierto que habíamos obtenido y nos propuso las siguientes mejoras:
+
+Relleno de siluetas en procesar_imagen: Se añade una línea para que los contornos detectados se dibujen rellenos en blanco (cv2.drawContours(imth, contornos, -1, 255, -1)). 
+
+Paso de imgorig a obtener_caracteristicas: Se añade para calcular la intensidad media de gris por partícula (media_gris), permitiendo clasificar correctamente sin romper la forma de las listas.
+
+Por último arreglo de erratas en los cálculos geometricos.
+
+Una vez añadidos todos estos cambios, se volvio a realizar la predicción la matriz en este caso fue:
+
+<img width="730" height="586" alt="image" src="https://github.com/user-attachments/assets/7a130f89-c15a-4e98-813a-189e1f732fe1" />
+
+Como se puede observar ahora, los fragmentos son detectados casi de manera perfecta pero por otro lado baja el acierto en las otras dos categorías. Además, ahora como se puede observar las métricas son bastante superiores.
+
+<img width="568" height="77" alt="image" src="https://github.com/user-attachments/assets/6ae25d00-a7d1-455a-b995-dbec0a6a098a" />
+
+**Cabe destacar, que el codigo desarrollado mejorado por inteligencia articial ha sido añadido de manera externa al ya desarrollado ya que se considera que aunque las métricas sean mejores estan lejos de ser perfectas**
 
 #### Imágenes adjuntando los resultados obtenidos
 
