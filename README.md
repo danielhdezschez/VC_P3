@@ -234,7 +234,7 @@ Una vez añadidos todos estos cambios, se volvio a realizar la predicción la ma
 
 <img width="730" height="586" alt="image" src="https://github.com/user-attachments/assets/7a130f89-c15a-4e98-813a-189e1f732fe1" />
 
-Como se puede observar ahora, los fragmentos son detectados casi de manera perfecta pero por otro lado baja el acierto en las otras dos categorías. Además, ahora como se puede observar las métricas son bastante superiores.
+Como se puede observar ahora, los fragmentos son detectados en su gran mayoría pero por otro lado baja el acierto en las otras dos categorías. Por otro lado, ahora se puede observar como las métricas son bastante superiores.
 
 <img width="568" height="77" alt="image" src="https://github.com/user-attachments/assets/6ae25d00-a7d1-455a-b995-dbec0a6a098a" />
 
