@@ -37,7 +37,7 @@ Filtrado y calibración:
 
 Eliminamos pequeñas manchas o ruido en la imagen descartando zonas muy pequeñas, probamos primero con 300 pero cogía formas que no eran monedas así que subimos a 500. Para asegurarnos de detectar solo monedas, comprobamos la relación entre el perímetro y el área (compacidad); si la forma no era lo suficientemente circular, el programa la ignoraba.
 
-Ajustamos una elipse a cada contorno válido para medir su tamaño en píxeles.
+Al principio lo hicimos solo con círculos pero nos dimos cuenta de que si la cámara no estaba perfectamente en paralelo con la mesa no pillaba bien los pixeles de las monedas. Es por ello que decidimos ajustar una elipse a cada contorno válido para medir su tamaño en píxeles.
 
 Al hacer clic sobre la moneda de 1 Euro, el programa calcula la distancia desde el clic hasta el centro de la moneda más cercana. Si la toca, fija el factor de conversión (píxeles por milímetro) y borra el registro del clic.
 
@@ -56,6 +56,8 @@ Facilidad de uso con la app móvil: El uso de la cámara del teléfono facilitó
 Precisión en la clasificación: El sistema cuenta y clasifica correctamente las monedas en estático. Gracias al umbralizado de Otsu y a la función cv2.findContours con RETR_EXTERNAL, la detección de los bordes exteriores funciona de forma muy fiable.
 
 Necesidad de recalibración al mover la cámara: Comprobamos que el recuento es exacto siempre que la cámara permanezca en una posición fija. Sin embargo, al mover o cambiar la altura del teléfono respecto a la mesa, la relación entre píxeles y milímetros varía de inmediato, por lo que se hace necesario volver a hacer clic sobre la moneda de 1 Euro para recalibrar la medida.
+
+Como se puede observar al ser los diámetros de algunas monedas entre ellas muy parecidas como 50cent-1euro o 10cent-5cent a veces se equivoca pues es muy difícil distinguir las dado que la cantidad de píxeles es muy parecida.
 
 #### Imágenes adjuntando los resultados obtenidos
 
