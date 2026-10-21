@@ -61,6 +61,12 @@ Como se puede observar al ser los diámetros de algunas monedas entre ellas muy 
 
 #### Imágenes adjuntando los resultados obtenidos
 
+antes de clicar sobre la moneda de 1 euro 
+
+<img width="819" height="651" alt="image" src="https://github.com/user-attachments/assets/de57204f-528d-4ef2-a115-4dd6cf11153a" />
+
+Tras clicar sobre la moneda de 1 euro ya liga cada moneda a un valor de la lista
+
 <img width="793" height="654" alt="WhatsApp Image 2026-10-21 at 20 33 32" src="https://github.com/user-attachments/assets/379b3efa-f7fc-4d08-a3b3-186f9029a964" />
 
 ### 2.2 - Tarea 2
