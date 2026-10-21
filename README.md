@@ -357,5 +357,6 @@ Mediana: 0.08574171284305544
 
 Si se quiere ver la imagen sobre la que se sacan contornos, el propio código lo muestra.
 
-<img width="496" height="431" alt="image" src="https://github.com/user-attachments/assets/715c14ce-20a3-4fd6-bed6-0634fa808c6f" />
+<img width="282" height="372" alt="image" src="https://github.com/user-attachments/assets/d1f3c4bd-67c6-4eb9-98bb-30d414c7cc2d" />
+
 
