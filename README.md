@@ -71,9 +71,9 @@ Tras clicar sobre la moneda de 1 euro ya liga cada moneda a un valor de la lista
 
 #### Código Adicional
 
-Como se puede observar en el código, se ha realizado un código adicional, en esta aproximación se ha intentado hacer el recuento de las monedas pero en este caso solapadas y solo para una imagen. 
+Como propuesta inicial para abordar el recuento en escenarios con monedas solapadas, optamos por implementar la Transformada de Hough para círculos (cv2.HoughCircles()). Aunque este algoritmo lograba detectar con cierto éxito los bordes y contornos individuales de las monedas superpuestas en las pruebas realizadas sobre imágenes estáticas, presentó limitaciones importantes a la hora de determinar con precisión el diámetro real y clasificar correctamente el valor monetario de cada una.
 
-Este codigo ha sido de prueba para utilizar HoughCircles() y su ventaja de poner encontrar formas aunque estén solapadas ya que se decidio realizar ambas tareas con cv2.findContours.
+Debido a que los resultados no alcanzaron la precisión y robustez requeridas para el cálculo del importe total, decidimos mantener cv2.findContours() como el método principal y definitivo para el desarrollo de ambas tareas de la práctica. No obstante, hemos conservado la aproximación basada en cv2.HoughCircles() a modo de tarea adicional y exploratoria, demostrando las posibilidades y limitaciones del conteo de elementos con solapamiento dentro del flujo de visión por computador.
 
 ### 2.2 - Tarea 2
 
