@@ -1,4 +1,4 @@
-# README - PRACTICA 3 - VISIÓN POR COMPUTADOR
+<img width="4608" height="3456" alt="pellet-03-olympus-10-01-2020" src="https://github.com/user-attachments/assets/48c03b22-2ee3-4d80-acf6-5f2b6f21529c" /># README - PRACTICA 3 - VISIÓN POR COMPUTADOR
 ### Jaime Cuenca Relinque y Daniel Hernández Sánchez
 #### **Objetivo del informe**
 
@@ -188,11 +188,11 @@ Una vez ya tenemos las características, se relacionan los contornos encontrados
 Una vez tenemos las caracteristicas extraidas de la imagen que se va analizar se pasa al entrenamiento del clasificador en este caso se ha decidido usar un DecisionTreeClassifier. Este clasificador 
 Las imágenes de entrenamiento contienen partículas pertenecientes a una única categoría:
 
-FRA.png → Fragmentos
+fragment-03-olympus-10-01-2020.JPG → Fragmentos
 
-PEL.png → Pellets
+pellet-03-olympus-10-01-2020.JPG → Pellets
 
-TAR.png → Alquitrán
+tar-03-olympus-10-01-2020.JPG → Alquitrán
 
 Cada imagen es procesada mediante la función procesar_imagen() obteniéndose los contornos de todas las partículas presentes.
 
