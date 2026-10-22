@@ -1,4 +1,4 @@
-<img width="4608" height="3456" alt="pellet-03-olympus-10-01-2020" src="https://github.com/user-attachments/assets/48c03b22-2ee3-4d80-acf6-5f2b6f21529c" /># README - PRACTICA 3 - VISIÓN POR COMPUTADOR
+# README - PRACTICA 3 - VISIÓN POR COMPUTADOR
 ### Jaime Cuenca Relinque y Daniel Hernández Sánchez
 #### **Objetivo del informe**
 
