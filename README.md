@@ -208,25 +208,25 @@ De esta forma se evita definir manualmente umbrales de decisión y se obtiene un
 Una vez entrenado el árbol de decisión con las características geométricas extraídas de las muestras de entrenamiento, se realiza una predicción con la función modelo.fit(muestras_train, label_train).
 A partir de la predicción usando la librería sklearn.metrics, se puede estudiar distintas métricas, en este caso, se ha estudiado:
 
-**Accuracy = 0.363**
+**Accuracy = 0.6**
 
-El modelo obtiene una exactitud del 36.3%, lo que indica que aproximadamente una de cada tres partículas es clasificada correctamente. Aunque el valor no es elevado se debe tener en cuenta que la utilización exclusiva de características geométricas, sin recurrir a técnicas de aprendizaje profundo, hace que haya un porcentaje muy bajo de acierto.
+El modelo obtiene una exactitud del 60%. Aunque el valor no es muy elevado se debe tener en cuenta que la utilización exclusiva de características geométricas, sin recurrir a técnicas de aprendizaje profundo, hace que haya un porcentaje muy bajo de acierto.
 
-**Precision = 0.694**
+**Precision = 0.527**
 
-La precisión alcanza un valor de 69.4%. Esto indica que, cuando el clasificador asigna una etiqueta a una partícula, dicha predicción suele ser razonablemente fiable.
+La precisión alcanza un valor de 52.7%. Esto indica que, cuando el clasificador asigna una etiqueta a una partícula, dicha predicción suele ser razonablemente fiable.
 
-**Recall = 0.363**
+**Recall = 0.6**
 
-El recall obtenido es de 36.3%, significativamente inferior a la precisión. Este comportamiento revela que el árbol de decisión está dejando sin detectar correctamente una gran cantidad de partículas reales, en especial aquellas clases cuyos descriptores geométricos son similares
+El recall obtenido es del 60%, eso significa que aproximadamente de cada 10 fragmentos, 6 son detectadas y clasificadas correctamente por el modelo, mientras que las 4 restantes son confundidas con otras categorías.
 
-**F1 Score  = 0.401**
+**F1 Score  = 0.537**
 
-El valor de 0.401 refleja el compromiso entre precisión y recall.
+El valor de 0.537 refleja el compromiso entre precisión y recall.
 
 Por último se puede observar la matriz de confusión obtenida, con los aciertos y fallos en detalle.
 
-<img width="699" height="510" alt="image" src="https://github.com/user-attachments/assets/77805ddc-b61a-4275-99ba-171902a8341b" />
+<img width="731" height="584" alt="image" src="https://github.com/user-attachments/assets/e6145397-0106-4671-85d7-ec5dc77a85a1" />
 
 Como se puede observar, la mayoría de errores se producen entre FRA y PEL, lo que indica que ambas categorías presentan características geométricas muy similares para el conjunto de descriptores utilizado. Con el fin de intentar que la predicción sea mas acertada se han utilizado diferentes umbrales para ver cual se adaptaba mejor a la imagen, de ahí que existan dos funciones de procesado de imagen, dependiendo la que se quiera utilizar.
 
@@ -240,150 +240,24 @@ Por último arreglo de erratas en los cálculos geometricos.
 
 Una vez añadidos todos estos cambios, se volvio a realizar la predicción la matriz en este caso fue:
 
-<img width="730" height="586" alt="image" src="https://github.com/user-attachments/assets/7a130f89-c15a-4e98-813a-189e1f732fe1" />
+<img width="729" height="587" alt="image" src="https://github.com/user-attachments/assets/75c1171d-f2c9-4911-9465-7ed3f8465cac" />
 
-Como se puede observar ahora, los fragmentos son detectados en su gran mayoría pero por otro lado baja el acierto en las otras dos categorías. Por otro lado, ahora se puede observar como las métricas son bastante superiores.
+Como se puede observar ahora, los fragmentos son detectados en gran mayoría y por otro lado baja el acierto en las otras dos categorías. Aun así, ahora se puede observar como las métricas son bastante superiores.
 
-<img width="568" height="77" alt="image" src="https://github.com/user-attachments/assets/6ae25d00-a7d1-455a-b995-dbec0a6a098a" />
+<img width="574" height="84" alt="image" src="https://github.com/user-attachments/assets/dda6e701-4cf2-4359-b9b8-fbf90d282f83" />
+
 
 **Cabe destacar, que el codigo desarrollado mejorado por inteligencia articial ha sido añadido de manera externa al ya desarrollado ya que se considera que aunque las métricas sean mejores estan lejos de ser perfectas**
 
 
 #### Imágenes adjuntando los resultados obtenidos
 
-Si se quiere observar las características geométricas existe la función imprimir_resultado(), usándola con los datos que se ha conseguido de entrenamiento.
+Si se quiere observar las características geométricas existe la función imprimir_estadisticas(), la cual muestra información similar a:
 
-TAR: 
-Número de objetos: 9
+<img width="261" height="568" alt="image" src="https://github.com/user-attachments/assets/e164127a-7617-4726-a26c-b7a14e10629c" />
+<img width="247" height="514" alt="image" src="https://github.com/user-attachments/assets/98ba9b3e-e11a-4e5d-bc39-f5fe7d62381c" />
 
-Área
-Media: 1431.2222222222222
-Std: 837.8501626554287
-Mediana: 1438.0
 
-Perímetro
-Media: 154.93560832076602
-Std: 79.58271103712252
-Mediana: 172.50966620445251
 
-Compacidad
-Media: 19.629876717286972
-Std: 5.213597223284835
-Mediana: 18.170966469036976
-
-Aspect Ratio
-Media: 0.9979405749348691
-Std: 0.14197386733806824
-Mediana: 0.9782608695652174
-
-Solidity
-Media: 0.9058116018099168
-Std: 0.04943008575248918
-Mediana: 0.9211401425178147
-
-Extent
-Media: 0.5746253274408738
-Std: 0.08446827918941069
-Mediana: 0.610512129380054
-
-Elipse
-Media: 1.5463420161595094
-Std: 0.5506531922323535
-Mediana: 1.4485541474714376
-
-Centroide
-Media: 0.4931703937607515
-Std: 0.1432657620716614
-Mediana: 0.49736463743969167
-
-PEL: 
-Número de objetos: 31
-
-Área
-Media: 164.06451612903226
-Std: 174.8964551705308
-Mediana: 140.5
-
-Perímetro
-Media: 141.0642398788083
-Std: 120.15826416553769
-Mediana: 102.42640614509583
-
-Compacidad
-Media: 130.7866805764562
-Std: 96.74231165226932
-Mediana: 111.7655913051606
-
-Aspect Ratio
-Media: 1.7023917003780578
-Std: 1.318818467010442
-Mediana: 1.1791044776119404
-
-Solidity
-Media: 0.448193819411499
-Std: 0.2349119172677839
-Mediana: 0.41336971350613916
-
-Extent
-Media: 0.23516078805825827
-Std: 0.12376646025109012
-Mediana: 0.23421926910299004
-
-Elipse
-Media: 2.4259039238765743
-Std: 1.4545830610584933
-Mediana: 1.8027496015350777
-
-Centroide
-Media: 0.17387981525091903
-Std: 0.1648709085024149
-Mediana: 0.11926535078992756
-
-FRA: 
-Número de objetos: 48
-
-Área
-Media: 107.84375
-Std: 157.1440142383333
-Mediana: 53.75
-
-Perímetro
-Media: 95.53112418204546
-Std: 104.93412249612312
-Mediana: 66.59797883033752
-
-Compacidad
-Media: 94.36747694392284
-Std: 70.81579864047582
-Mediana: 79.2095351036753
-
-Aspect Ratio
-Media: 1.6877896390136486
-Std: 0.9864110262506973
-Mediana: 1.4722222222222223
-
-Solidity
-Media: 0.48449151056747014
-Std: 0.14191524665194177
-Mediana: 0.4848842195540309
-
-Extent
-Media: 0.21587846099632677
-Std: 0.09227938535977578
-Mediana: 0.20574012550756737
-
-Elipse
-Media: 3.5908783190439237
-Std: 2.3008176905293993
-Mediana: 3.016996907754522
-
-Centroide
-Media: 0.10147086325153291
-Std: 0.08497338600044925
-Mediana: 0.08574171284305544
-
-Si se quiere ver la imagen sobre la que se sacan contornos, el propio código lo muestra.
-
-<img width="282" height="372" alt="image" src="https://github.com/user-attachments/assets/d1f3c4bd-67c6-4eb9-98bb-30d414c7cc2d" />
 
 
